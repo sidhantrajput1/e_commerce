@@ -63,8 +63,8 @@ const PlaceOrder = () => {
 
       switch (method) {
          // API calls for cod 
-         case 'cod' : 
-            var response =await  axios.post(backendURL+"/api/v1/order/place" , orderData, {headers : {token}})
+        case 'cod' : 
+            var response =await axios.post(backendURL+"/api/v1/order/place" , orderData, {headers : {token}})
             // console.log(response)
             if (response.data.success) {
               setCartItems({});
@@ -73,7 +73,17 @@ const PlaceOrder = () => {
               toast.error(response.data.message);
             }
             break;
+        case 'stripe' :
+              var responseStripe = await axios.post(backendURL+"/api/v1/order/stripe", orderData, {headers : {token}})
+              console.log(responseStripe.data)
 
+              if (responseStripe.data.success) {
+                  const {session_url} = responseStripe.data
+                  window.location.replace(session_url)
+              } else { 
+                toast.error(responseStripe.data.message)
+              }
+            break;
          default : 
             break;
       }
@@ -82,7 +92,6 @@ const PlaceOrder = () => {
       toast.error(error.message)
     }
   };
-  
   
   
 

@@ -1,4 +1,4 @@
-import { currency } from "../../Admin/src/App.jsx"
+// import { currency } from "../../Admin/src/App.jsx"
 import Order from "../models/orderModel.js"
 import User from "../models/userModel.js"
 import Stripe from 'stripe'
@@ -53,7 +53,7 @@ const placeOrderStripe = async (req, res) => {
     try {
         
         const { userId,  items, amount, address } = req.body;
-        const {orgin} = req.headers;
+        const {origin} = req.headers;
 
         const orderData = {
             userId,
@@ -90,18 +90,18 @@ const placeOrderStripe = async (req, res) => {
             quantity : 1
         })
 
-        const session = new stripe.checkout.sessions.create({
-            success_url :  `${orgin}/verify?success=true&orderId=${newOrder._id}`,
-            cancel_url : `${orgin}/verify?success=false&orderId=${newOrder._id}`,
+        const session = await stripe.checkout.sessions.create({
+            success_url :  `${origin}/verify?success=true&orderId=${newOrder._id}`,
+            cancel_url : `${origin}/verify?success=false&orderId=${newOrder._id}`,
             line_items,
             mode : 'payment'
         })
 
         res.status(201).json({
             success : true,
-            sesion_url : session.url
+            session_url : session.url
         })
-
+ 
     } catch (error) {
         console.log(error)
         res.json({ success : false, message : error.message })
