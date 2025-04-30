@@ -13,6 +13,7 @@ import Footer from "./components/Footer";
 import SearchBar from "./components/SearchBar";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import Verify from "./pages/Verify";
 
 
 // Layout component to include NavBar and Outlet for other routes
@@ -67,6 +68,10 @@ const appRouter = createBrowserRouter([
         path: "/orders",
         element: <Orders />,
       },
+      {
+        path : "/verify",
+        element : <Verify />
+      }
     ],
   },
 ]);

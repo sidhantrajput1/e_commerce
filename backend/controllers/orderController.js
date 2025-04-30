@@ -15,15 +15,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 const placeOrder = async(req, res) => {
     try {
         const { userId,  items, amount, address } = req.body;
-        // const userId = req.body.userId;
-    
-        // if (!userId) {
-        //   return res.status(400).json({ success: false, message: "User not authenticated." });
-        // }
-    
-        // if (!items || !Array.isArray(items) || items.length === 0) {
-        //   return res.status(400).json({ success: false, message: "Invalid or empty items array." });
-        // }
     
         const orderData = {
           userId,
@@ -108,6 +99,28 @@ const placeOrderStripe = async (req, res) => {
     }
 }
 
+// verify Stripe
+const verifyStripe = async() => {
+
+    const {orderId, success, userId} = req.body;
+    try {
+
+        if (success == 'true') {
+            await Order.findByIdAndUpdate(orderId, {payment : true})
+            await User.findByIdAndUpdate(userId, {cartData : {}})
+
+            res.json({
+                success : true
+            })
+        } else {
+            await Order.findByIdAndDelete(orderId)
+            res.json({ success : false })
+        }
+    } catch (error) {
+        console.log(error)
+        res.json({ success : false, message : error.message })
+    }
+} 
 
 // placing order using razorpay method
 const placeOrderRazorpay = async(req, res) => {
@@ -175,4 +188,4 @@ const updateStatus = async (req, res) => {
 }
 
 
-export {updateStatus, userOrders, allOrders, placeOrder, placeOrderRazorpay, placeOrderStripe}
+export {updateStatus, userOrders, allOrders, placeOrder, placeOrderRazorpay, placeOrderStripe, verifyStripe}
