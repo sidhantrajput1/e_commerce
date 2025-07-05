@@ -100,7 +100,7 @@ const placeOrderStripe = async (req, res) => {
 }
 
 // verify Stripe
-const verifyStripe = async() => {
+const verifyStripe = async(req, res) => {
 
     const {orderId, success, userId} = req.body;
     try {

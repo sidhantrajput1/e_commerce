@@ -1,11 +1,11 @@
-/* eslint-disable react-refresh/only-export-components */
 import { createContext,  useEffect,  useState } from "react";
 // import { products } from "../assets/assets";
 import { toast } from "react-toastify";
 import axios from 'axios'
 
 // Named export for context
-export const ShopContext = createContext();
+const  ShopContext = createContext();
+export { ShopContext };
 
 const ShopContextProvider = ({ children }) => {
   const currency = "$";
@@ -111,7 +111,7 @@ const ShopContextProvider = ({ children }) => {
   
     try {
       const response = await axios.get(backendURL+"/api/v1/product/list");
-      // console.log(response)
+      console.log(response)
   
       if (response.data.success) {
         setProducts(response.data.products);

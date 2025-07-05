@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect } from 'react';
 import { ShopContext } from '../context/ShopContext';
 import { useSearchParams } from 'react-router-dom';
@@ -16,7 +17,7 @@ const Verify = () => {
         try {
             if (!token) return null;
 
-            const response = axios.post(backendURL+"/api/v1/order/verifystripe", {success, orderId}, {headers : {token}})
+            const response = await axios.post(backendURL+"/api/v1/order/verifystripe", {success, orderId}, {headers : {token}})
             console.log(response.data);
 
             if (response.data.success) {
